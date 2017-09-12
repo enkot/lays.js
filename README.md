@@ -1,2 +1,2 @@
-# lays
+# Lays.js
 Tiny masonry layout library.

@@ -1,0 +1,39 @@
+{
+  "name": "lays.js",
+  "version": "0.0.1",
+  "description": "Tiny masonry layout library.",
+  "main": "dist/lays.cjs.js",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "jest"
+  },
+  "keywords": [
+    "masonry",
+    "layout",
+    "browser",
+    "webpack"
+  ],
+  "author": "Taras Batenkov <taras.batenkov@gmail.com> (https://github.com/BatenkovT)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/enkot/lays.js"
+  },
+  "bugs": "https://github.com/enkot/lays.js/issues",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^7.2.3",
+    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+    "babel-plugin-transform-es2015-parameters": "^6.24.1",
+    "babel-plugin-transform-es2015-template-literals": "^6.22.0",
+    "babel-preset-env": "^1.6.0",
+    "jest": "^20.0.4",
+    "rollup": "^0.45.2",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-eslint": "^4.0.0",
+    "rollup-plugin-multi-dest": "^1.0.2",
+    "rollup-plugin-uglify": "^2.0.1",
+    "rollup-watch": "^4.3.1"
+  }
+}

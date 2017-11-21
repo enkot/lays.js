@@ -1,12 +1,12 @@
 {
   "name": "lays.js",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Tiny masonry layout library.",
   "main": "dist/lays.cjs.js",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "test": "jest"
+    "test": "mocha --require babel-core/register --require jsdom-global/register"
   },
   "keywords": [
     "masonry",
@@ -14,7 +14,7 @@
     "browser",
     "webpack"
   ],
-  "author": "Taras Batenkov <taras.batenkov@gmail.com> (https://github.com/BatenkovT)",
+  "author": "Taras Batenkov <taras.batenkov@gmail.com> (https://github.com/enkot)",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -24,15 +24,22 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^7.2.3",
-    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+    "babel-plugin-transform-builtin-extend": "^1.1.2",
     "babel-plugin-transform-es2015-parameters": "^6.24.1",
+    "babel-plugin-transform-es2015-spread": "^6.22.0",
     "babel-plugin-transform-es2015-template-literals": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "chai": "^4.1.2",
+    "chai-dom": "^1.6.0",
     "jest": "^20.0.4",
+    "jsdom": "11.3.0",
+    "jsdom-global": "3.0.2",
+    "mocha": "^4.0.1",
     "rollup": "^0.45.2",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-eslint": "^4.0.0",
-    "rollup-plugin-multi-dest": "^1.0.2",
     "rollup-plugin-uglify": "^2.0.1",
     "rollup-watch": "^4.3.1"
   }

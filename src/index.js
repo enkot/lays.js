@@ -1,4 +1,5 @@
-import { extend, inRange, fillZero, getMax } from './tools';
+import { extend, fillZero, getMax, inRange, concatItems } from './tools';
+import LaysQueue from './LaysQueue';
 
 /**
  * Lays.js v1.0.0
@@ -13,23 +14,32 @@ import { extend, inRange, fillZero, getMax } from './tools';
  * @param {Object} options Object with wrapper element and breakpoints
  */
 const Lays = (options) => {
-    const { parent, cols } = options;
+    const { parent } = options;
     if (!parent) return;
 
-    const items = [];
-    const newItems = [];
-    const breakpoints = {
-        540: 2,
-        720: 3,
-        1024: 4,
-        1280: 5,
+    const defaults = {
+        prependItems: false,
+        maxItems: undefined,
+        breakpoints: {
+            540: 2,
+            720: 3,
+            1024: 4,
+            1280: 5,
+        }
     };
+
+    extend(defaults.breakpoints, options.breakpoints);
+    extend(defaults, options);
+
+    const { prependItems, maxItems, breakpoints } = defaults;
+    
+    const items = LaysQueue(maxItems);
+    const newItems = LaysQueue(maxItems);
+    let restItems = [];
     let colsNum = 1;
     let parentHeight = 0;
 
-    parent.classList.add('_laysGridContainer');
-
-    extend(breakpoints, cols);
+    parent.classList.add('_laysContainer');
     
     /**
      * Public method. 
@@ -39,14 +49,14 @@ const Lays = (options) => {
      * @param {Object} el DOM element that should be added to masonry
      * @param {Boolean} [prepend=false] Add DOM element to the beginning or end of the array of elements
      */
-    const add = (el, prepand) => {
-        el.classList.add('_laysGridItem');
-
-        if (prepand) {
-            items.unshift(el);
+    const add = (el) => {
+        el.classList.add('_laysItem');
+        
+        if (prependItems) {
+            concatItems(restItems, items.unshift(el));
             newItems.unshift(el);
         } else {
-            items.push(el); 
+            concatItems(restItems, items.push(el));
             newItems.push(el);
         }
     }; 
@@ -85,37 +95,34 @@ const Lays = (options) => {
             const left = width * col;
             const top = columns[col];
 
-            item.style.cssText += `
-                position: absolute;
-                width: ${width}px;
-                left: ${left}px;
-                top: ${top}px; 
-            `;
+            item.style.cssText += `position:absolute;width:${width}px;left:${left}px;top:${top}px;`;
 
             col = next(item, columns, col);
         });
 
         maxHeight = getMax(columns);
 
-        parent.style.cssText += `
-            width: 100%;
-            height: ${maxHeight}px;
-        `;
+        parent.style.cssText += `width:100%;height:${maxHeight}px;`;
     };
 
     /**
-     * Place masonry items to DOM.
+     * Append new (only new) masonry items to DOM.
      *
      * @method placeToDOM
      */
     const placeToDOM = () => {
         if (newItems.length) {
             const fragment = document.createDocumentFragment();
-
+            
+            restItems.map((item) => {
+                if (parent.contains(item))
+                    parent.removeChild(item);
+            });
             newItems.map((item) => {
                 fragment.appendChild(item);
             });
             newItems.length = 0;
+            restItems.length = 0;
 
             parent.appendChild(fragment);
         }
@@ -131,7 +138,7 @@ const Lays = (options) => {
 
         Object.keys(breakpoints).map((point) => {
             if (parent.offsetWidth > point)
-                colsNum = inRange(breakpoints[point]);
+                colsNum = inRange(breakpoints[point], 1, 10);
         });
     };
 
@@ -141,7 +148,22 @@ const Lays = (options) => {
      * @method setResizeListener
      */
     const addResizeListener = () => {
-        window.addEventListener("resize", render);
+        let resizeTimer;
+
+        window.addEventListener("resize", () => {
+
+            // disable transitions when window resizing
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+          
+                parent.classList.remove('stopTransition');
+                      
+            }, 250);
+
+            parent.classList.add('stopTransition');
+
+            render();
+        });
     };
 
     /**
@@ -161,7 +183,8 @@ const Lays = (options) => {
     // return public methods
     return {
         add,
-        render
+        render,
+        _items: items,
     };
 };
 

@@ -19,19 +19,21 @@ p {
 	transform: translateY(-4rem);
 	transform-origin: top;
 	opacity: 0;
-	transition: .5s transform cubic-bezier(0.165, 0.840, 0.440, 1.000);
+	transition: .5s all cubic-bezier(0.165, 0.840, 0.440, 1.000);
+}
+.stopTransition ._laysItem {
+	transition: none !important;
 }
 ._laysItem.loaded {
 	transform: none;
 	opacity: 1;
 }
 ._laysItemInner {
-	margin: .5rem;
+	margin: .7rem;
 	border-radius: 8px;
 	overflow: hidden;
 	background-color: #fff;
-	// border: 1px solid #d5d5d5;
-	box-shadow: 0 5px 30px rgba(0,0,0,.12);
+	box-shadow: 0 5px 30px rgba(10,13,48,.15);
 }
 ._laysItemPicture {
 	position: relative;

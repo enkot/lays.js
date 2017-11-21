@@ -6,8 +6,8 @@ export const extend = (obj1, obj2) => {
     for (let attrname in obj2) { obj1[attrname] = obj2[attrname]; }
 };
 
-export const inRange = (num) => (
-    num > 1 ? (num <= 10 ? num : 10) : 1
+export const inRange = (num, from = 1, to = Infinity) => (
+    num > from ? (num <= to ? num : to) : from
 );
 
 export const fillZero = (cols) => (
@@ -19,3 +19,7 @@ export const getMax = (elements) => (
       value > max ? value : max
     ), 0)
 );
+
+export const concatItems = (arr1, arr2) => {
+    [].push.apply(arr1, arr2);
+};

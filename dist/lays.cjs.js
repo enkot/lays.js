@@ -11,7 +11,9 @@ var extend = function extend(obj1, obj2) {
 };
 
 var inRange = function inRange(num) {
-    return num > 1 ? num <= 10 ? num : 10 : 1;
+    var from = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    var to = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : Infinity;
+    return num > from ? num <= to ? num : to : from;
 };
 
 var fillZero = function fillZero(cols) {
@@ -24,6 +26,36 @@ var getMax = function getMax(elements) {
     return elements.reduce(function (max, value) {
         return value > max ? value : max;
     }, 0);
+};
+
+var concatItems = function concatItems(arr1, arr2) {
+    [].push.apply(arr1, arr2);
+};
+
+var LaysQueue = function LaysQueue(size) {
+    var queue = [];
+
+    size = size || Infinity;
+
+    queue.fixedSize = size;
+
+    queue.push = function () {
+        [].push.apply(this, arguments);
+
+        if (this.length <= this.fixedSize) return [];
+
+        return this.splice(0, this.length - this.fixedSize);
+    };
+
+    queue.unshift = function () {
+        [].unshift.apply(this, arguments);
+
+        if (this.length <= this.fixedSize) return [];
+
+        return this.splice(this.fixedSize);
+    };
+
+    return queue;
 };
 
 /**
@@ -39,25 +71,36 @@ var getMax = function getMax(elements) {
  * @param {Object} options Object with wrapper element and breakpoints
  */
 var Lays = function Lays(options) {
-    var parent = options.parent,
-        cols = options.cols;
+    var parent = options.parent;
 
     if (!parent) return;
 
-    var items = [];
-    var newItems = [];
-    var breakpoints = {
-        540: 2,
-        720: 3,
-        1024: 4,
-        1280: 5
+    var defaults = {
+        prependItems: false,
+        maxItems: undefined,
+        breakpoints: {
+            540: 2,
+            720: 3,
+            1024: 4,
+            1280: 5
+        }
     };
+
+    extend(defaults.breakpoints, options.breakpoints);
+    extend(defaults, options);
+
+    var prependItems = defaults.prependItems,
+        maxItems = defaults.maxItems,
+        breakpoints = defaults.breakpoints;
+
+
+    var items = LaysQueue(maxItems);
+    var newItems = LaysQueue(maxItems);
+    var restItems = [];
     var colsNum = 1;
     var parentHeight = 0;
 
-    parent.classList.add('_laysGridContainer');
-
-    extend(breakpoints, cols);
+    parent.classList.add('_laysContainer');
 
     /**
      * Public method. 
@@ -67,14 +110,14 @@ var Lays = function Lays(options) {
      * @param {Object} el DOM element that should be added to masonry
      * @param {Boolean} [prepend=false] Add DOM element to the beginning or end of the array of elements
      */
-    var add = function add(el, prepand) {
-        el.classList.add('_laysGridItem');
+    var add = function add(el) {
+        el.classList.add('_laysItem');
 
-        if (prepand) {
-            items.unshift(el);
+        if (prependItems) {
+            concatItems(restItems, items.unshift(el));
             newItems.unshift(el);
         } else {
-            items.push(el);
+            concatItems(restItems, items.push(el));
             newItems.push(el);
         }
     };
@@ -113,18 +156,18 @@ var Lays = function Lays(options) {
             var left = width * col;
             var top = columns[col];
 
-            item.style.cssText += '\n                position: absolute;\n                width: ' + width + 'px;\n                left: ' + left + 'px;\n                top: ' + top + 'px; \n            ';
+            item.style.cssText += 'position:absolute;width:' + width + 'px;left:' + left + 'px;top:' + top + 'px;';
 
             col = next(item, columns, col);
         });
 
         maxHeight = getMax(columns);
 
-        parent.style.cssText += '\n            width: 100%;\n            height: ' + maxHeight + 'px;\n        ';
+        parent.style.cssText += 'width:100%;height:' + maxHeight + 'px;';
     };
 
     /**
-     * Place masonry items to DOM.
+     * Append new (only new) masonry items to DOM.
      *
      * @method placeToDOM
      */
@@ -132,10 +175,14 @@ var Lays = function Lays(options) {
         if (newItems.length) {
             var fragment = document.createDocumentFragment();
 
+            restItems.map(function (item) {
+                if (parent.contains(item)) parent.removeChild(item);
+            });
             newItems.map(function (item) {
                 fragment.appendChild(item);
             });
             newItems.length = 0;
+            restItems.length = 0;
 
             parent.appendChild(fragment);
         }
@@ -150,7 +197,7 @@ var Lays = function Lays(options) {
         colsNum = 1;
 
         Object.keys(breakpoints).map(function (point) {
-            if (parent.offsetWidth > point) colsNum = inRange(breakpoints[point]);
+            if (parent.offsetWidth > point) colsNum = inRange(breakpoints[point], 1, 10);
         });
     };
 
@@ -160,7 +207,21 @@ var Lays = function Lays(options) {
      * @method setResizeListener
      */
     var addResizeListener = function addResizeListener() {
-        window.addEventListener("resize", render);
+        var resizeTimer = void 0;
+
+        window.addEventListener("resize", function () {
+
+            // disable transitions when window resizing
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function () {
+
+                parent.classList.remove('stopTransition');
+            }, 250);
+
+            parent.classList.add('stopTransition');
+
+            render();
+        });
     };
 
     /**
@@ -180,7 +241,8 @@ var Lays = function Lays(options) {
     // return public methods
     return {
         add: add,
-        render: render
+        render: render,
+        _items: items
     };
 };
 

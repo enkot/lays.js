@@ -78,7 +78,7 @@ const item = document.createElement('div');
 lays.add(item);
 ```
 
-#### render(element)
+#### render()
 Render all items, added before.
 ```javascript
 lays.render();

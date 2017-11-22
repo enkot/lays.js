@@ -1,63 +1,115 @@
+// Initialize Lays with options
 var grid = document.querySelector(".grid");
 var masonry = Lays({
 	parent: grid,
-	maxItems: 10,
+	maxItems: 20,
 	prependItems: true
 });
 
+// Create simple template: photo, title, body
+// IMPORTANT! Places for images should have fixed height (library doesn`t wait for images by default).
+// In order to save image aspect ratio, use 'padding': height / width * 100 + '%'
 function createBlock (data) {
 	var width = 400;
-	var height = Math.round(Math.random() * 400 + 200);
+	var height = Math.round(Math.random() * width + 200);
 	var block = document.createElement("div");
-	var imgUrl = 'https://unsplash.it/' + width + '/' + height + '?random';
+	var imgUrl = 'https://picsum.photos/' + width + '/' + height + '?random';
+	var color = data.gender == 'female' ? '_pinkColor' : '_blueColor';
 
 	block.innerHTML = [
-		'<div class="_laysItemInner">',
+		'<div class="_laysItemInner ' + color + '" style="overflow: hidden;">',
+			'<div class="_laysItemUser">',
+				'<div class="_laysItemUserPicture">',
+					'<img class="" src="' + data.picture.thumbnail + '">',
+				'</div>',
+				'<h5>' + data.name.first + ' ' + data.name.last + '</h5>',
+			'</div>',
 			'<div class="_laysItemPicture" style="height: 0; padding-bottom: ' + height / width * 100 + '%">',
 				'<img class="_laysItemImage" src="' + imgUrl + '">',
 			'</div>',
 			'<div class="_laysItemInfo">',
-				'<h4>' + data.title + '</h4>',
-				'<p>' + data.body + '</p>',
+				'<p>' + data.location.street + '</p>',
 			'</div>',
 		'</div>',
 	].join('');
 
-	block.getElementsByTagName('img')[0].addEventListener("load", function () {
+	onImagesLoaded(block, function () {
 		block.classList.add("loaded");
 	});
 
 	return block;
 }
 
-function getData(show) {
-	function json(response) {
-	  return response.json()
-	}
+// Show block after all images have loaded
+function onImagesLoaded(block, cb) {
+	var imgs = block.getElementsByTagName('img'),
+    len = imgs.length,
+    counter = 0;
 
-	fetch('https://my-json-server.typicode.com/enkot/lays.js/posts')
-		.then(json)
-		.then(function(data) {
-			show(data);
-		})
-		.catch(function(error) {
-			console.log('Fetch Error :-S', error);
-		});
+	[].forEach.call( imgs, function( img ) {
+		img.addEventListener( 'load', incrementCounter, false );
+	} );
+
+	function incrementCounter() {
+		counter++;
+		if (counter === len) 
+			cb();
+	}
 }
 
-function show (data) {
-	for (var i = 20; i--;) {
-		var block = createBlock(data[i]);
-		masonry.add(block);
-	}
+// Get some test data from API server (actualy from repository db.json file)
+// I recommend you to use 'typicode.com' server in development :) 
+function getData(cb) {
+	makeRequest('https://randomuser.me/api/?results=100&inc=gender,name,location,picture', function(data) {
+		console.log(data);
+		cb(data);
+	});
+}
 
-	masonry.render();
+function makeRequest(path, cb) {
+	var xhr = new XMLHttpRequest();
+	
+	xhr.open('GET', path, true);
+	
+	xhr.send(); 
+	
+	xhr.onreadystatechange = function() { 
+	  	if (xhr.readyState != 4) return;
+	
+	  	if (xhr.status != 200) {
+			console.log(xhr.status + ': ' + xhr.statusText);
+	  	} else {
+			var data = JSON.parse(xhr.responseText);
+
+			cb(data);
+	  	}
+	
+	}
+}
+
+// Every 8 seconds add new blocks with random data and renders on the page.
+// First time generates 20 items, after that - 1 or 2.
+function show(data) {
+	let odd = true;
+	let max = 20;
+
+	const generateBlocks = () => {
+		for (var i = max; i--;) {
+			var randomData = Math.floor(Math.random() * 100); 
+
+			var block = createBlock(data.results[randomData]);
+
+			masonry.add(block);
+		}
+		masonry.render();
+
+		odd = !odd;
+		max = !odd ? 1 : 2;
+	};
+
+	setInterval(generateBlocks, 8000);
+	generateBlocks();
 }
 
 getData(show);
 
-setTimeout(() => {
-	var block = createBlock({title: 'New post', body: 'Post body'});
-	masonry.add(block);
-	masonry.render();
-}, 6000);

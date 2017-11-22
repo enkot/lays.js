@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/lays.svg" width="200" alt="Lays.js">
+  <img src="docs/lays.png" width="200" alt="Lays.js">
   <br><br>
   <a href="https://travis-ci.org/Enkot/Lays.js"><img src="https://travis-ci.org/Enkot/Lays.js.svg?branch=master" alt="travis"></a> <a href="https://david-dm.org/Enkot/Lays.js"><img src="https://david-dm.org/Enkot/Lays.js.svg" alt="dependencies Status"></a>
 </p>

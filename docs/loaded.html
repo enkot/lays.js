@@ -72,7 +72,7 @@
         var lays = Lays({ parent: masonry });
 
         // Wait for each image loads
-        onImagesLoaded(container, function() {
+        onImagesLoaded(masonry, function() {
             // Render our elements
             lays.render();
             masonry.classList.add('loaded');

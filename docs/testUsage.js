@@ -1,7 +1,7 @@
 // Initialize Lays with options
-var grid = document.querySelector(".grid");
+var container = document.querySelector(".masonry");
 var masonry = Lays({
-    parent: grid,
+    parent: container,
     maxItems: 20,
     prependItems: true
 });
@@ -105,7 +105,7 @@ function show(data) {
         max = !odd ? 1 : 2;
     };
 
-    setInterval(generateBlocks, 8000);
+    // setInterval(generateBlocks, 8000);
     generateBlocks();
 }
 

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Lays.js</title>
+    <style>
+        img { width: 100%; }
+        .masonry { 
+            opacity: 0; 
+            transition: 1s opacity ease;
+        }
+        .loaded { opacity: 1; }
+    </style>
+</head>
+<body>
+    <!-- After each image loads, elements will be rendered  -->
+    <div class="masonry">
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/323?random">
+        </div>
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/495?random">
+        </div>
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/438?random">
+        </div>
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/371?random">
+        </div>
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/341?random">
+        </div>
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/539?random">
+        </div>
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/366?random">
+        </div>
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/570?random">
+        </div>
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/370?random">
+        </div>
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/482?random">
+        </div>
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/567?random">
+        </div>
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/521?random">
+        </div>
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/541?random">
+        </div>
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/201?random">
+        </div>
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/493?random">
+        </div>
+        <div class="_laysItem">
+            <img src="https://picsum.photos/400/576?random">
+        </div>
+    </div>
+    <script src="./lays.min.js"></script>
+    <script>
+        // Initialize Lays
+        var container = document.querySelector(".masonry");
+        var masonry = Lays({ parent: container });
+
+        // Wait for each image loads
+        onImagesLoaded(container, function() {
+            // Render our elements
+            masonry.render();
+            container.classList.add('loaded');
+        });
+
+        
+        function onImagesLoaded(block, cb) {
+            var imgs = block.getElementsByTagName('img'),
+            len = imgs.length,
+            counter = 0;
+
+            [].forEach.call(imgs, function(img) {
+                img.addEventListener('load', incrementCounter, false);
+            });
+
+            function incrementCounter() {
+                counter++;
+                if (counter === len) 
+                    cb();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 {
   "name": "lays.js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Tiny masonry layout library.",
   "main": "dist/lays.cjs.js",
   "scripts": {

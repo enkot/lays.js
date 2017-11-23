@@ -119,7 +119,8 @@ const Lays = (options) => {
                     parent.removeChild(item);
             });
             newItems.map((item) => {
-                fragment.appendChild(item);
+                if (!parent.contains(item)) 
+                    fragment.appendChild(item);
             });
             newItems.length = 0;
             restItems.length = 0;
@@ -166,6 +167,10 @@ const Lays = (options) => {
         });
     };
 
+    const init = () => {
+        [].map.call(parent.children, (el) => add(el));
+    };
+
     /**
      * Public method. 
      * Renders masonry layout.
@@ -179,6 +184,7 @@ const Lays = (options) => {
     };
 
     addResizeListener();
+    init();
 
     // return public methods
     return {

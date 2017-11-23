@@ -179,7 +179,7 @@ var Lays = function Lays(options) {
                 if (parent.contains(item)) parent.removeChild(item);
             });
             newItems.map(function (item) {
-                fragment.appendChild(item);
+                if (!parent.contains(item)) fragment.appendChild(item);
             });
             newItems.length = 0;
             restItems.length = 0;
@@ -224,6 +224,12 @@ var Lays = function Lays(options) {
         });
     };
 
+    var init = function init() {
+        [].map.call(parent.children, function (el) {
+            return add(el);
+        });
+    };
+
     /**
      * Public method. 
      * Renders masonry layout.
@@ -237,6 +243,7 @@ var Lays = function Lays(options) {
     };
 
     addResizeListener();
+    init();
 
     // return public methods
     return {

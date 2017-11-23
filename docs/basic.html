@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Lays.js</title>
+    <style>
+        img {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Elements with predefined places for images. Lays shoud know all elements height -->
+    <div class="masonry">
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 80.75%">
+                <img src="https://picsum.photos/400/323?random">
+            </div>
+        </div>
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 123.75%">
+                <img src="https://picsum.photos/400/495?random">
+            </div>
+        </div>
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 109.5%">
+                <img src="https://picsum.photos/400/438?random">
+            </div>
+        </div>
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 92.75%">
+                <img src="https://picsum.photos/400/371?random">
+            </div>
+        </div>
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 85.25%">
+                <img src="https://picsum.photos/400/341?random">
+            </div>
+        </div>
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 134.75%">
+                <img src="https://picsum.photos/400/539?random">
+            </div>
+        </div>
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 91.5%">
+                <img src="https://picsum.photos/400/366?random">
+            </div>
+        </div>
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 142.5%">
+                <img src="https://picsum.photos/400/570?random">
+            </div>
+        </div>
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 92.5%">
+                <img src="https://picsum.photos/400/370?random">
+            </div>
+        </div>
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 120.5%">
+                <img src="https://picsum.photos/400/482?random">
+            </div>
+        </div>
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 141.75%">
+                <img src="https://picsum.photos/400/567?random">
+            </div>
+        </div>
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 130.25%">
+                <img src="https://picsum.photos/400/521?random">
+            </div>
+        </div>
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 135.25%">
+                <img src="https://picsum.photos/400/541?random">
+            </div>
+        </div>
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 50.24999999999999%">
+                <img src="https://picsum.photos/400/201?random">
+            </div>
+        </div>
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 123.25%">
+                <img src="https://picsum.photos/400/493?random">
+            </div>
+        </div>
+        <div class="_laysItem">
+            <div style="height: 0; padding-bottom: 144%">
+                <img src="https://picsum.photos/400/576?random">
+            </div>
+        </div>
+    </div>
+    <script src="./lays.min.js"></script>
+    <script>
+        // Initialize Lays
+        var container = document.querySelector(".masonry");
+        var masonry = Lays({ parent: container });
+
+        // Render our elements
+        masonry.render();
+    </script>
+</body>
+</html>

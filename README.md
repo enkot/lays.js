@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/lays.png" width="200" alt="Lays.js">
+  <img src="docs/images/lays.png" width="200" alt="Lays.js">
   <br><br>
   <a href="https://travis-ci.org/Enkot/Lays.js"><img src="https://travis-ci.org/Enkot/Lays.js.svg?branch=master" alt="travis"></a> <a href="https://david-dm.org/Enkot/Lays.js"><img src="https://david-dm.org/Enkot/Lays.js.svg" alt="dependencies Status"></a>
 </p>
@@ -13,8 +13,12 @@ Tiny masonry layout library.
 - **Dependencies** -> None ( no jQuery :))
 - **Support** -> IE 9+
 
-Example (from 'docs' directory): 
+Live: 
 https://enkot.github.io/lays.js/
+
+Example usage you can see in the [Docs](https://github.com/enkot/lays.js/tree/master/docs) folder:
+- [basic.html](https://github.com/enkot/lays.js/tree/master/docs/basic.html)
+- [loaded.html](https://github.com/enkot/lays.js/tree/master/docs/loaded.html)
 
 ## How to Install
 Install, using NPM:
@@ -84,7 +88,6 @@ Render all items, added before.
 lays.render();
 ```
 
-Example usage you can see in the [Docs](https://github.com/enkot/lays.js/tree/master/docs) folder, file [testUsage.js](https://github.com/enkot/lays.js/blob/master/docs/testUsage.js).
 
 [![forthebadge](http://forthebadge.com/images/badges/winter-is-coming.svg)](http://forthebadge.com)
 

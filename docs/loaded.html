@@ -68,17 +68,17 @@
     <script src="./lays.min.js"></script>
     <script>
         // Initialize Lays
-        var container = document.querySelector(".masonry");
-        var masonry = Lays({ parent: container });
+        var masonry = document.querySelector(".masonry");
+        var lays = Lays({ parent: masonry });
 
         // Wait for each image loads
         onImagesLoaded(container, function() {
             // Render our elements
-            masonry.render();
-            container.classList.add('loaded');
+            lays.render();
+            masonry.classList.add('loaded');
         });
 
-        
+
         function onImagesLoaded(block, cb) {
             var imgs = block.getElementsByTagName('img'),
             len = imgs.length,

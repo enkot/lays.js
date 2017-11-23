@@ -9,9 +9,9 @@
 Tiny masonry layout library.
 
 - **Size** -> Tiny size (< 2kb)
-- **Performance** -> Rerenders only when it needed
-- **Dependencies** -> None ( no jQuery :))
-- **Support** -> IE 9+
+- **Dynamic** -> Simply add new items
+- **No dependencies** -> No jQuery :)
+- **Browsers support** -> IE 9+
 
 #### Live: https://enkot.github.io/lays.js/
 
@@ -37,11 +37,37 @@ In browser:
 ## How to Use
 Just call it with your element:
 ```html
-<div id="masonry"></div>
+<div id="masonry">
+  <div class="_laysItem">...</div>
+  <div class="_laysItem">...</div>
+  <div class="_laysItem">...</div>
+  <div class="_laysItem">...</div>
+</div>
 ```
+Create masonry layout with existing items and add new item to the end:
 ```javascript
 const masonry = document.getElementById("masonry");
 const lays = Lays({ parent: masonry });
+
+const newItem = document.createElement('div');
+lays.add(newItem);
+
+lays.render();
+```
+
+Will add new item to the beginning and remove last one:
+```javascript
+const masonry = document.getElementById("masonry");
+const lays = Lays({ 
+  parent: masonry,
+  prependItems: true,
+  maxItems: 4, 
+});
+
+const newItem = document.createElement('div');
+lays.add(newItem);
+
+lays.render();
 ```
 
 ## Options

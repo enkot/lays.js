@@ -85,7 +85,7 @@ function makeRequest(path, cb) {
     }
 }
 
-// Every 8 seconds add new blocks with random data and renders on the page.
+// Every 7 seconds add new blocks with random data and renders on the page.
 // First time generates 20 items, after that - 1 or 2.
 function show(data) {
     let odd = true;
@@ -105,7 +105,7 @@ function show(data) {
         max = !odd ? 1 : 2;
     };
 
-    // setInterval(generateBlocks, 8000);
+    setInterval(generateBlocks, 7000);
     generateBlocks();
 }
 

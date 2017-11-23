@@ -13,12 +13,11 @@ Tiny masonry layout library.
 - **Dependencies** -> None ( no jQuery :))
 - **Support** -> IE 9+
 
-Live: 
-https://enkot.github.io/lays.js/
+#### Live: https://enkot.github.io/lays.js/
 
 Example usage you can see in the [Docs](https://github.com/enkot/lays.js/tree/master/docs) folder:
-- [basic.html](https://github.com/enkot/lays.js/tree/master/docs/basic.html)
-- [loaded.html](https://github.com/enkot/lays.js/tree/master/docs/loaded.html)
+- [basic.html](https://github.com/enkot/lays.js/tree/master/docs/basic.html) - [Live](https://enkot.github.io/lays.js/basic.html)
+- [loaded.html](https://github.com/enkot/lays.js/tree/master/docs/loaded.html) - [Live](https://enkot.github.io/lays.js/loaded.html)
 
 ## How to Install
 Install, using NPM:

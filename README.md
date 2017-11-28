@@ -6,12 +6,12 @@
 
 # Lays.js
 
-Tiny masonry layout library.
+Tiny cascading grid layout library. [Masonry](https://github.com/desandro/masonry) - great library, but has unnecessary code, quite heavy and doesn't have items limit (for example, to show fresh 10 items only). These are the main reasons that led to write a Lays.js.
 
-- **Size** -> Tiny size (< 2kb)
-- **Dynamic** -> Simply add new items
-- **No dependencies** -> No jQuery :)
-- **Browsers support** -> IE 9+
+- **Size** -> Tiny size (< 2kb)!!
+- **Dynamic** -> Dynamically add new items.
+- **No dependencies** -> No jQuery!
+- **Browsers support** -> IE 9+.
 
 #### Live: https://enkot.github.io/lays.js/
 

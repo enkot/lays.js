@@ -1,7 +1,7 @@
 {
   "name": "lays.js",
-  "version": "1.0.4",
-  "description": "Tiny masonry layout library.",
+  "version": "1.0.5",
+  "description": "Tiny masonry grid layout library.",
   "main": "dist/lays.cjs.js",
   "scripts": {
     "build": "rollup -c",
@@ -10,9 +10,11 @@
   },
   "keywords": [
     "masonry",
+    "cascading",
+    "grid",
     "layout",
-    "browser",
-    "webpack"
+    "small",
+    "javascript"
   ],
   "author": "Taras Batenkov <taras.batenkov@gmail.com> (https://github.com/enkot)",
   "license": "MIT",

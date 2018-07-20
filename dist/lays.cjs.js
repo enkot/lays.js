@@ -28,9 +28,15 @@ var getMax = function getMax(elements) {
     }, 0);
 };
 
-var concatItems = function concatItems(arr1, arr2) {
-    [].push.apply(arr1, arr2);
-};
+function wait(func, delta) {
+    var to = void 0;
+
+    return function () {
+        if (to) clearTimeout(to);
+
+        to = setTimeout(func, delta);
+    };
+}
 
 var LaysQueue = function LaysQueue(size) {
     var queue = [];
@@ -58,8 +64,33 @@ var LaysQueue = function LaysQueue(size) {
     return queue;
 };
 
+var LaysEvent = function LaysEvent() {
+    var queue = {};
+
+    return {
+        fire: function fire(event) {
+            var handlers = queue[event];
+
+            if (typeof handlers === 'undefined') {
+                return;
+            }
+
+            handlers.map(function (handler) {
+                return handler();
+            });
+        },
+        on: function on(event, callback) {
+            if (typeof queue[event] === 'undefined') queue[event] = [];
+
+            queue[event].push(callback);
+        }
+    };
+};
+
+var LaysEvent$1 = LaysEvent();
+
 /**
- * Lays.js v1.0.0
+ * Lays.js v1.1.0
  * @description Tiny masonry layout library.
  * @author BatenkovT
  */
@@ -94,17 +125,24 @@ var Lays = function Lays(options) {
         breakpoints = defaults.breakpoints;
 
 
+    var pushType = prependItems ? 'unshift' : 'push';
+
+    // all items
     var items = LaysQueue(maxItems);
+
+    // items to add
     var newItems = LaysQueue(maxItems);
+
+    // items to remove
     var restItems = [];
+
     var colsNum = 1;
-    var parentHeight = 0;
 
     parent.classList.add('_laysContainer');
 
     /**
      * Public method. 
-     * Add handler to event, executed when this event is fired.
+     * Add new DOM element to show in layout.
      *
      * @method add
      * @param {Object} el DOM element that should be added to masonry
@@ -113,13 +151,8 @@ var Lays = function Lays(options) {
     var add = function add(el) {
         el.classList.add('_laysItem');
 
-        if (prependItems) {
-            concatItems(restItems, items.unshift(el));
-            newItems.unshift(el);
-        } else {
-            concatItems(restItems, items.push(el));
-            newItems.push(el);
-        }
+        [].push.apply(restItems, items[pushType](el));
+        newItems[pushType](el);
     };
 
     /**
@@ -156,7 +189,7 @@ var Lays = function Lays(options) {
             var left = width * col;
             var top = columns[col];
 
-            item.style.cssText += 'position:absolute;width:' + width + 'px;left:' + left + 'px;top:' + top + 'px;';
+            item.style.cssText += 'position:absolute;width:' + width + 'px;-ms-transform:translate(' + left + 'px,' + top + 'px);transform:translate(' + left + 'px,' + top + 'px);';
 
             col = next(item, columns, col);
         });
@@ -172,20 +205,21 @@ var Lays = function Lays(options) {
      * @method placeToDOM
      */
     var placeToDOM = function placeToDOM() {
-        if (newItems.length) {
-            var fragment = document.createDocumentFragment();
+        if (!newItems.length) return;
 
-            restItems.map(function (item) {
-                if (parent.contains(item)) parent.removeChild(item);
-            });
-            newItems.map(function (item) {
-                if (!parent.contains(item)) fragment.appendChild(item);
-            });
-            newItems.length = 0;
-            restItems.length = 0;
+        var fragment = document.createDocumentFragment();
 
-            parent.appendChild(fragment);
-        }
+        restItems.map(function (item) {
+            return parent.removeChild(item);
+        });
+        newItems.map(function (item) {
+            return fragment.appendChild(item);
+        });
+
+        newItems.length = 0;
+        restItems.length = 0;
+
+        parent.appendChild(fragment);
     };
 
     /**
@@ -207,21 +241,11 @@ var Lays = function Lays(options) {
      * @method setResizeListener
      */
     var addResizeListener = function addResizeListener() {
-        var resizeTimer = void 0;
-
-        window.addEventListener("resize", function () {
-
-            // disable transitions when window resizing
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function () {
-
-                parent.classList.remove('stopTransition');
-            }, 250);
-
-            parent.classList.add('stopTransition');
+        window.addEventListener('resize', wait(function () {
+            LaysEvent$1.fire('resize');
 
             render();
-        });
+        }, 200));
     };
 
     var init = function init() {
@@ -249,6 +273,7 @@ var Lays = function Lays(options) {
     return {
         add: add,
         render: render,
+        on: LaysEvent$1.on,
         _items: items
     };
 };

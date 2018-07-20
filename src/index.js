@@ -1,8 +1,9 @@
-import { extend, fillZero, getMax, inRange, concatItems } from './tools';
+import { extend, fillZero, getMax, inRange, wait } from './tools';
 import LaysQueue from './LaysQueue';
+import LaysEvent from './LaysEvent';
 
 /**
- * Lays.js v1.0.0
+ * Lays.js v1.1.0
  * @description Tiny masonry layout library.
  * @author BatenkovT
  */
@@ -33,17 +34,24 @@ const Lays = (options) => {
 
     const { prependItems, maxItems, breakpoints } = defaults;
     
+    const pushType = prependItems ? 'unshift' : 'push';
+    
+    // all items
     const items = LaysQueue(maxItems);
+
+    // items to add
     const newItems = LaysQueue(maxItems);
-    let restItems = [];
+    
+    // items to remove
+    const restItems = [];
+
     let colsNum = 1;
-    let parentHeight = 0;
 
     parent.classList.add('_laysContainer');
     
     /**
      * Public method. 
-     * Add handler to event, executed when this event is fired.
+     * Add new DOM element to show in layout.
      *
      * @method add
      * @param {Object} el DOM element that should be added to masonry
@@ -52,13 +60,8 @@ const Lays = (options) => {
     const add = (el) => {
         el.classList.add('_laysItem');
         
-        if (prependItems) {
-            concatItems(restItems, items.unshift(el));
-            newItems.unshift(el);
-        } else {
-            concatItems(restItems, items.push(el));
-            newItems.push(el);
-        }
+        [].push.apply(restItems, items[pushType](el));
+        newItems[pushType](el);
     }; 
 
     /**
@@ -95,7 +98,7 @@ const Lays = (options) => {
             const left = width * col;
             const top = columns[col];
 
-            item.style.cssText += `position:absolute;width:${width}px;left:${left}px;top:${top}px;`;
+            item.style.cssText += `position:absolute;width:${width}px;-ms-transform:translate(${left}px,${top}px);transform:translate(${left}px,${top}px);`;
 
             col = next(item, columns, col);
         });
@@ -111,22 +114,17 @@ const Lays = (options) => {
      * @method placeToDOM
      */
     const placeToDOM = () => {
-        if (newItems.length) {
-            const fragment = document.createDocumentFragment();
-            
-            restItems.map((item) => {
-                if (parent.contains(item))
-                    parent.removeChild(item);
-            });
-            newItems.map((item) => {
-                if (!parent.contains(item)) 
-                    fragment.appendChild(item);
-            });
-            newItems.length = 0;
-            restItems.length = 0;
+        if (!newItems.length) return;
 
-            parent.appendChild(fragment);
-        }
+        const fragment = document.createDocumentFragment();
+        
+        restItems.map((item) => parent.removeChild(item));
+        newItems.map((item) => fragment.appendChild(item));
+
+        newItems.length = 0;
+        restItems.length = 0;
+
+        parent.appendChild(fragment);
     };
 
     /**
@@ -149,22 +147,11 @@ const Lays = (options) => {
      * @method setResizeListener
      */
     const addResizeListener = () => {
-        let resizeTimer;
-
-        window.addEventListener("resize", () => {
-
-            // disable transitions when window resizing
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function() {
-          
-                parent.classList.remove('stopTransition');
-                      
-            }, 250);
-
-            parent.classList.add('stopTransition');
+        window.addEventListener('resize', wait(() => {
+            LaysEvent.fire('resize');
 
             render();
-        });
+        }, 200));
     };
 
     const init = () => {
@@ -190,6 +177,7 @@ const Lays = (options) => {
     return {
         add,
         render,
+        on: LaysEvent.on,
         _items: items,
     };
 };

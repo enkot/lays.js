@@ -6,6 +6,18 @@ var masonry = Lays({
     prependItems: true
 });
 
+var resizeTimer;
+
+masonry.on('resize', function() {
+    // disable transitions when window resizing
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+        container.classList.remove('_laysStopTransition');
+    }, 600);
+
+    container.classList.add('_laysStopTransition');
+});
+
 // Create simple template: photo, title, body
 // IMPORTANT! Places for images should have fixed height (library doesn`t wait for images by default).
 // In order to save image aspect ratio, use 'padding': height / width * 100 + '%'

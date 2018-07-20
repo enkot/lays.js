@@ -1,6 +1,6 @@
 {
   "name": "lays.js",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Tiny masonry grid layout library.",
   "main": "dist/lays.cjs.js",
   "scripts": {

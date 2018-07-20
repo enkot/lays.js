@@ -4,10 +4,7 @@ import eslint from 'rollup-plugin-eslint';
 
 const defaultPlugins = [
     eslint(),
-    babel({
-        presets: [ 'es2015-rollup' ],
-        babelrc: false
-    }),
+    babel(),
 ];
 
 export default [{

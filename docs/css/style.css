@@ -32,19 +32,10 @@ p {
 	height: 3rem;
 }
 ._laysItem {
-	top: 0;
-	left: 0;
-	transform: translateY(-4rem);
-	transform-origin: top;
-	opacity: 0;
 	transition: .5s all cubic-bezier(0.165, 0.840, 0.440, 1.000);
 }
-.stopTransition ._laysItem {
+._laysStopTransition ._laysItem {
 	transition: none !important;
-}
-._laysItem.loaded {
-	transform: none;
-	opacity: 1;
 }
 ._laysItemInner {
 	position: relative;
@@ -53,6 +44,14 @@ p {
 	overflow: hidden;
 	background-color: #fff;
 	box-shadow: 0 2px 30px rgba(10,13,48,.15);
+	transform: translateY(-40px);
+	opacity: 0;
+	transform-origin: top;
+	transition: .5s all cubic-bezier(0.165, 0.840, 0.440, 1.000);
+}
+._laysItem.loaded ._laysItemInner {
+	transform: none;
+	opacity: 1;
 }
 ._laysItemInner:before {
 	display: block;

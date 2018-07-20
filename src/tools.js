@@ -20,6 +20,12 @@ export const getMax = (elements) => (
     ), 0)
 );
 
-export const concatItems = (arr1, arr2) => {
-    [].push.apply(arr1, arr2);
+export function wait (func, delta) {
+    let to;
+  
+    return () => {
+        if (to) clearTimeout(to);
+    
+        to = setTimeout(func, delta);
+    };
 };

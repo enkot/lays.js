@@ -5,9 +5,7 @@ const LaysEvent = () => {
         fire(event) {
             const handlers = queue[event];
 
-            if (typeof handlers === 'undefined') {
-                return;
-            }
+            if (typeof handlers === 'undefined') return;
 
             handlers.map((handler) => handler());
         },
@@ -22,4 +20,3 @@ const LaysEvent = () => {
 };
 
 export default LaysEvent();
-

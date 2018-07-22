@@ -1,9 +1,15 @@
-import { extend, fillZero, getMax, inRange, wait } from './tools';
+import {
+    extend,
+    fillZero,
+    getMax,
+    inRange,
+    wait
+} from './tools';
 import LaysQueue from './LaysQueue';
 import LaysEvent from './LaysEvent';
 
 /**
- * Lays.js v1.1.0
+ * Lays.js v1.1.1
  * @description Tiny masonry layout library.
  * @author BatenkovT
  */
@@ -15,7 +21,9 @@ import LaysEvent from './LaysEvent';
  * @param {Object} options Object with wrapper element and breakpoints
  */
 const Lays = (options) => {
-    const { parent } = options;
+    const {
+        parent
+    } = options;
     if (!parent) return;
 
     const defaults = {
@@ -32,23 +40,27 @@ const Lays = (options) => {
     extend(defaults.breakpoints, options.breakpoints);
     extend(defaults, options);
 
-    const { prependItems, maxItems, breakpoints } = defaults;
-    
+    const {
+        prependItems,
+        maxItems,
+        breakpoints
+    } = defaults;
+
     const pushType = prependItems ? 'unshift' : 'push';
-    
+
     // all items
     const items = LaysQueue(maxItems);
 
     // items to add
     const newItems = LaysQueue(maxItems);
-    
+
     // items to remove
     const restItems = [];
 
     let colsNum = 1;
 
     parent.classList.add('_laysContainer');
-    
+
     /**
      * Public method. 
      * Add new DOM element to show in layout.
@@ -59,10 +71,10 @@ const Lays = (options) => {
      */
     const add = (el) => {
         el.classList.add('_laysItem');
-        
+
         [].push.apply(restItems, items[pushType](el));
         newItems[pushType](el);
-    }; 
+    };
 
     /**
      * Return next column to which masonry item should be added.
@@ -117,7 +129,7 @@ const Lays = (options) => {
         if (!newItems.length) return;
 
         const fragment = document.createDocumentFragment();
-        
+
         restItems.map((item) => parent.removeChild(item));
         newItems.map((item) => fragment.appendChild(item));
 

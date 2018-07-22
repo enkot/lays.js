@@ -1,10 +1,26 @@
-import { assert } from 'chai';
-import { extend, inRange, fillZero, getMax, concatItems } from '../src/tools';
+import chai, {
+	expect,
+	assert,
+} from 'chai';
+import spies from 'chai-spies';
+import {
+	extend,
+	inRange,
+	fillZero,
+	getMax,
+	wait,
+} from '../src/tools';
+
+chai.use(spies);
 
 describe('helper functions', function () {
 	describe('helper extend function', () => {
-		const obj1 = { a: 1 };
-		const obj2 = { b: 2 };
+		const obj1 = {
+			a: 1
+		};
+		const obj2 = {
+			b: 2
+		};
 
 		extend(obj1, obj2);
 
@@ -22,7 +38,7 @@ describe('helper functions', function () {
 	});
 	describe('helper fillZero function', () => {
 		it('return given size array filled with zero values', () => {
-			assert.deepEqual(fillZero(5), [0,0,0,0,0]);
+			assert.deepEqual(fillZero(5), [0, 0, 0, 0, 0]);
 		})
 	});
 	describe('helper getMax function', () => {
@@ -30,14 +46,18 @@ describe('helper functions', function () {
 			assert.equal(getMax([5, -1, 34, 8, 2]), 34);
 		})
 	});
-	describe('helper concatItems function', () => {
-		const arr1 = [23, 3, 56];
-		const arr2 = [5, 94];
+	describe('helper wait function', () => {
+		it('call method after 200ms, after few calles, only once', (done) => {
+			const spy = chai.spy();
+			const func = wait(spy, 200);
 
-		concatItems(arr1, arr2);
+			func();
+			func();
 
-		it('merge 2 arrays', () => {
-			assert.deepEqual(arr1, [23, 3, 56, 5, 94]);
+			setTimeout(() => {
+				expect(spy).to.have.been.called.once;
+				done();
+			}, 200);
 		})
 	});
 });

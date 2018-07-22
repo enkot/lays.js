@@ -1,11 +1,13 @@
 {
   "presets": [
-    [
-      "env",  
-      {
-        "modules": false
-      }
-    ]
+    ["env", {
+      "modules": false
+    }]
   ],
-  "plugins": ["transform-es2015-template-literals"]
+  "plugins": ["transform-es2015-template-literals"],
+  "env": {
+    "test": {
+      "presets": ["env"]
+    }
+  }
 }

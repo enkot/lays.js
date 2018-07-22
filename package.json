@@ -1,12 +1,12 @@
 {
   "name": "lays.js",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Tiny masonry grid layout library.",
   "main": "dist/lays.cjs.js",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "test": "mocha --require babel-core/register --require jsdom-global/register"
+    "test": "NODE_ENV=test mocha --require babel-core/register --require jsdom-global/register"
   },
   "keywords": [
     "masonry",
@@ -30,6 +30,7 @@
     "babel-preset-env": "^1.6.0",
     "chai": "^4.1.2",
     "chai-dom": "^1.6.0",
+    "chai-spies": "^1.0.0",
     "jsdom": "11.3.0",
     "jsdom-global": "3.0.2",
     "mocha": "^4.0.1",
